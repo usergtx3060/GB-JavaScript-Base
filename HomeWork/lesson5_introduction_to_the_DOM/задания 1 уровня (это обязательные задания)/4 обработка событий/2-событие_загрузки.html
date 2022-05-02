@@ -23,7 +23,25 @@
     покажите с помощью alert сообщение: "все картинки загружены". -->
 
     <script>
-        
+        'use strict';
+        window.addEventListener('load', function () {
+            alert("все картинки загружены");
+        });
+
+        /* или так: */
+
+        /*for (let i = 0; i < document.images.length; i++) {
+            document.images[i].addEventListener('load', imageLoaded);
+        }
+
+        let currentCountOfLoadedImages = 0;
+
+        function imageLoaded() {
+            ++currentCountOfLoadedImages;
+            if (currentCountOfLoadedImages === document.images.length) {
+                alert("все картинки загружены");
+            }
+        }*/
     </script>
 </body>
 </html>
