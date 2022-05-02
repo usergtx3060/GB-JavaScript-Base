@@ -26,12 +26,11 @@
     первая, вторая и третья звезды, и т.д. 
     mouseover - это событие срабатывает когда мы наводим на элемент.
     mouseout - это событие срабатывает когда мы перестаем наводить на элемент.
-	Вы можете пойти более продвинутым путем, и получать предыдущий элемент 
-	например с помощью https://mzl.la/3a4SPlR
     -->
 
     <script>
-        let firstStar = document.getElementById('first');
+        'use strict';
+        /* let firstStar = document.getElementById('first');
         let secondStar = document.getElementById('second');
         let thirdStar = document.getElementById('third');
         let fourthStar = document.getElementById('fourth');
@@ -40,14 +39,43 @@
         let goldenClass = 'golden';
 
         firstStar.addEventListener('mouseover', function() {
-            if (!firstStar.classList.contains(goldenClass)) {
+            if (!firstStar.classList.contains('goldenClass')) {
                 firstStar.classList.add(goldenClass);
             }
         });
 
         firstStar.addEventListener('mouseout', function() {
             firstStar.classList.remove(goldenClass);
-        });
+        }); */
+
+        // вы можете сделать используя заготовку если вам трудно,
+        // я буду делать по другому
+
+        let iElems = document.querySelectorAll('i');
+        iElems.forEach(function(i) {
+            i.addEventListener('mouseover', function(event) {
+                addGoldenClass(event.target);
+            });
+            i.addEventListener('mouseout', function(event) {
+                removeGoldenClass(event.target);
+            });
+        })
+
+        function addGoldenClass(i) {
+            i.classList.add('golden');
+            let previousElem = i.previousElementSibling;
+            if (previousElem !== null && previousElem.tagName === 'I') {
+                return addGoldenClass(previousElem);
+            }
+        }
+
+        function removeGoldenClass(i) {
+            i.classList.remove('golden');
+            let previousElem = i.previousElementSibling;
+            if (previousElem !== null && previousElem.tagName === 'I') {
+                return removeGoldenClass(previousElem);
+            }
+        }
     </script>
 </body>
 </html>

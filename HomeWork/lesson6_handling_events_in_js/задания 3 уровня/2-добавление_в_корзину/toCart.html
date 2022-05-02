@@ -23,9 +23,9 @@
         <button>В корзину</button>
     </div>
 
-    <!-- Задание. Нужно чтобы при клике по кнопке, блок .product, в котором она
-    находится становился цвета (имеется в виду background) lightgreen, а текст на 
-	кнопке стал "Добавлено", для этого:
+    <!-- Задание. Нужно чтобы при клике по кнопке блок .product в котором она
+    находится становился цвета lightgreen, а текст на кнопке стал "Добавлено",
+    для этого:
     1. Найдите все кнопки, например с помощью querySelectorAll
     2. Переберите полученную коллекцию кнопок, например с помощью forEach,
     и каждой кнопке назначьте в качестве обработчика клика фукнцию
@@ -41,11 +41,16 @@
     -->
 
     <script>
-        
-		
-		function buttonClickHandler(event) {
-		
-		}
+        'use strict';
+        let buttons = document.querySelectorAll('button');
+        buttons.forEach(function(button) {
+            button.addEventListener('click', buttonClickHandler);
+        });
+
+        function buttonClickHandler(event) {
+            event.target.parentNode.style.background = 'lightgreen';
+            event.target.textContent = 'Добавлено';
+        }
     </script>
 </body>
 </html>
