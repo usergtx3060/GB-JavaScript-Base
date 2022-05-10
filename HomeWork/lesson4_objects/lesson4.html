@@ -8,7 +8,202 @@
 
 <body>
     <script>
-        
+    "use strict"
+
+	/**
+	* 1. (это задание делайте по желанию)
+	* Написать функцию, преобразующую число в объект. Передавая на вход число в диапазоне [0, 999],
+	* мы должны получить на выходе объект, в котором в соответствующих свойствах описаны разряды числа:
+	* - единицы (в свойстве units)
+	* - десятки (в свойстве tens)
+	* - сотни (в свойстве hundereds)
+	* Например, для числа 45 мы должны получить следующий объект:
+	*/
+	
+	function getNumber(a) {
+		return {
+			hundereds: Math.floor(a / 100),
+			tens: Math.floor(a / 10) % 10,
+			units: a % 10,
+		};
+	}
+
+
+	let a;
+
+	do {
+	a = parseInt(prompt('Введите целое число а:'));
+	if(!Number.isInteger(a) || a < 0 || a > 999||isNaN(a)){
+		alert('число должно быть целым числом в диапазоне [0 .. 999].');
+	}else{
+		break
+	}
+	} while (Number.isInteger(a) || a < 0 || a > 999||isNaN(a));
+
+
+	let numberobject = getNumber(a);
+
+	console.log('сотен ' + numberobject.hundereds);
+	console.log('десятков ' + numberobject.tens);
+	console.log('единиц ' + numberobject.units);
+
+	/**
+	* 1.1 (это обязательное задание) Сделайте в стиле es5, а затем в стиле es6 (по аналогии из дополнительных видео -> 3
+	* примеры наследования -> типы на es5 и es6), конструктор Product, который принимает параметры name и price, сохраните
+	* их как свойства объекта. Также объекты типа Product должны иметь метод make25PercentDiscount, который будет уменьшать
+	* цену в объекте на 25%. Имейте в виду, что метод make25PercentDiscount не должен быть внутри функции-конструктора,
+	* и также не нужно создавать отдельный объект-прототип (как объект transport в уроке).
+	*/
+
+	//А) es5
+	function Product(name, price) {
+		this.name = name;
+		this.price = price;
+	}
+
+	Product.prototype.make25PercentDiscount = function () {
+		this.price = this.price - (this.price * 0.25);
+	};
+
+	let exampOfProduct = new Product("Холодильник", 25000);
+	exampOfProduct.make25PercentDiscount();
+
+	console.log(exampOfProduct);
+
+	//Б. es6
+
+	class Product_1 {
+		constructor(name, price) {
+			this.name = name;
+			this.price = price;
+		}
+
+		make25PercentDiscount() {
+			this.price = this.price - (this.price * 0.25);
+		}
+	}
+
+	let exampOfProduct_2 = new Product_1('Стиральная машина', 36700);
+	exampOfProduct_2.make25PercentDiscount();
+
+	console.log(exampOfProduct_2);
+
+	/**
+	* 1.2 (это обязательное задание) Сделайте в стиле es5, а затем в стиле es6 (по аналогии из дополнительных видео -> 3 примеры наследования -> механика наследования),
+	а) конструктор Post, который принимает параметры author, text, date и сохраняет их как свойства объекта. Объекты типа Post должны иметь метод edit, который будет
+	принимать текст и записывать его в свойство text объекта.
+	б) конструктор AttachedPost, который принимает параметры author, text, date. Проинициализируйте эти свойства с помощью конструктора Post, чтобы не дублировать код.
+	Также в конструкторе AttachedPost должно создаваться свойство highlighted со значением false. Унаследуйте в объектах типа AttachedPost методы из Post.
+	Объекты типа AttachedPost должны иметь метод makeTextHighlighted, который будет назначать свойству highlighted значение true.
+	*/
+
+	//А) es5
+
+	function Post(author, text, date) {
+		this.author = author;
+		this.text = text;
+		this.date = date;
+	}
+
+	Post.prototype.edit = function (text) {
+		this.text = text;
+	}
+
+	function AttachedPost(author, text, date) {
+		Post.call(this, author, text, date);
+		this.highlighted = false;
+	}
+
+	//Б) es5
+	AttachedPost.prototype = Object.create(Post.prototype);
+	AttachedPost.prototype.constructor = AttachedPost;
+
+	AttachedPost.prototype.makeTextHighlighted = function () {
+		this.highlighted = true;
+	}
+
+	//result
+
+	let newPost = new AttachedPost('author', 'Some text', '23.04.2022');
+	console.log(newPost);
+	newPost.makeTextHighlighted();
+	newPost.edit('new text');
+	console.log(newPost);
+
+	//А) es6
+
+	class Post_es6 {
+		constructor(author, text, date) {
+			this.author = author;
+			this.text = text;
+			this.date = date;
+		}
+
+		edit(text) {
+			this.text = text;
+		}
+
+	}
+
+	//Б) es6
+
+	class AttachedPost_es6 extends Post_es6 {
+		constructor(author, text, date) {
+			super(author, text, date);
+			this.highlighted = false;
+		}
+
+		makeTextHighlighted() {
+			this.highlighted = true;
+		}
+	}
+
+	let newPost_es6 = new AttachedPost_es6('author', 'Some text', '23.04.2022');
+	console.log(newPost_es6);
+	newPost_es6.makeTextHighlighted();
+	newPost_es6.edit('new text');
+	console.log(newPost_es6);
+
+	/**
+	* 2. (это задание не является частью учебной программы, делайте его по желанию).
+	* Для игры бродилка (которая есть в дополнительных видео), добавить возможность
+	* ходить по диагонали цифрами 1, 3, 7, 9.
+	* Также необходимо сделать так, чтобы пользователь не мог совершить шаг в стенку,
+	* т.е. при направлении в стенку и игрок оставался на том же месте где стоял.
+	*/
+	
+	let walkerGame = {
+    //Запускает игру.
+    run() {
+        renderer.clear();
+        renderer.render();
+        while (true) {
+            //Получаем направление от игрока.
+            const direction = mover.getDirection();
+            if (direction === null) {
+                console.log("Игра окончена");
+                walkerGame.init();
+                millionaireGame.init();
+                return;
+            }
+            const nextPoint = mover.getNextPosition(direction);
+            //Если переход вне границ поля, то не двигаемся.
+            if (nextPoint.x >= 0 && nextPoint.x <= (config.colsCount - 1) && nextPoint.y >= 0 && nextPoint.y <= (config.rowsCount - 1)) {
+                renderer.clear();
+                player.move(nextPoint);
+                renderer.render();
+            }
+        }
+    },
+
+    //При открытии страницы.
+    init() {
+        console.log("Чтобы начать игру наберите walkerGame.run() и нажмите Enter.");
+		}
+	};
+
+	walkerGame.init();
+	/**    
     </script>
 </body>
 
